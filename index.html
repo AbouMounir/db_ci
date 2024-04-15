@@ -1,37 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carte cartographique ci</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin="" />
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <link rel="stylesheet" href="style.css">
+
+    <script src="district_bas_sassandra.js"></script>
+    <script src="district_bas_sassandra_dpt.js"></script>
+    <script src="district_bas_sassandra_reg.js"></script>
+    <script src="district_bas_sassandra_sp.js"></script>
+    <script src="equipements.js"></script>
+    <script src="layerStyle.js"></script>
+    <script src="hydro.js"></script>
 </head>
+
 <body>
     <div id="map"></div>
 
     <script>
         const carte = L.map('map').setView([6.816111, -5.274167], 7);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(carte);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', { foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(carte);
 
-        let district = {
-            "color":"red",
-            "weight":"1",
-            "opacity":0.7
-        }
+        L.geoJSON(equipementsJSON, {
+            style: equipements
+        }).bindPopup(function (layer) {
+            return layer.feature.properties.Nom;
+        }).addTo(carte);
 
-        L.geoJSON(data, {
+        L.geoJSON(hydroJSON, {
+            style: hydro
+        }).addTo(carte);
+
+        L.geoJSON(dptJSON, {
+            style: dpt
+        }).addTo(carte);
+
+        L.geoJSON(regJSON, {
+            style: reg
+        }).addTo(carte);
+
+        L.geoJSON(districtJSON, {
             style: district
         }).addTo(carte);
-        
+
     </script>
 </body>
+
 </html>
