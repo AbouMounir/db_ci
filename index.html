@@ -21,17 +21,21 @@
     <script src="equipements.js"></script>
     <script src="layerStyle.js"></script>
     <script src="hydro.js"></script>
+    <script src="route.js"></script>
 </head>
 
 <body>
     <div id="map"></div>
 
     <script>
+
         const carte = L.map('map').setView([6.816111, -5.274167], 7);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', { foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(carte);
 
         L.geoJSON(equipementsJSON, {
-            style: equipements
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, geojsonMarkerOptions);
+            }
         }).bindPopup(function (layer) {
             return layer.feature.properties.Nom;
         }).addTo(carte);
